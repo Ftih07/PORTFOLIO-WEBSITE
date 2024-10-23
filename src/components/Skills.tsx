@@ -1,16 +1,18 @@
+"use client";
+
 import React from "react";
 import { FaHtml5, FaReact, FaJsSquare, FaPython } from "react-icons/fa";
 import { SiCsharp, SiFlutter, SiLaravel, SiNextdotjs } from "react-icons/si";
 
 const skillIcons = [
-  { icon: <FaHtml5 size={140} />, label: "HTML" },
-  { icon: <SiCsharp size={140} />, label: "C#" },
-  { icon: <FaReact size={110} />, label: "React" },
-  { icon: <FaJsSquare size={140} />, label: "JavaScript" },
-  { icon: <SiLaravel size={140} />, label: "Laravel" },
-  { icon: <SiNextdotjs size={140} />, label: "NextJs" },
-  { icon: <SiFlutter size={110} />, label: "Flutter" },
-  { icon: <FaPython size={140} />, label: "Python" },
+  { icon: <FaHtml5 size={140} />, label: "HTML", color: "#E34F26" },
+  { icon: <SiCsharp size={140} />, label: "C#", color: "#178600" },
+  { icon: <FaReact size={110} />, label: "React", color: "#61DAFB" },
+  { icon: <FaJsSquare size={140} />, label: "JavaScript", color: "#F7DF1E" },
+  { icon: <SiLaravel size={140} />, label: "Laravel", color: "#FF2D20" },
+  { icon: <SiNextdotjs size={140} />, label: "NextJs", color: "#000000" },
+  { icon: <SiFlutter size={110} />, label: "Flutter", color: "#02569B" },
+  { icon: <FaPython size={140} />, label: "Python", color: "#3776AB" },
 ];
 
 const Skills = () => {
@@ -22,9 +24,22 @@ const Skills = () => {
           {skillIcons.map((skill, index) => (
             <div
               key={index}
-              className="h-[160px] w-[160px] md:h-[220px] md:w-[220px] flex flex-col justify-between items-center bg-white/10 p-4 rounded-xl"
+              className="h-[160px] w-[160px] md:h-[220px] md:w-[220px] flex flex-col justify-between items-center bg-white/10 p-4 rounded-xl transition-transform duration-300 hover:scale-110"
             >
-              {skill.icon}
+              <div
+                className="text-white transition-colors duration-300"
+                style={{
+                  color: skill.color,
+                  filter: "grayscale(100%)",
+                  transition: "all 0.3s ease-in-out",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.filter = "none")}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.filter = "grayscale(100%)")
+                }
+              >
+                {skill.icon}
+              </div>
               <p className="mt-2">{skill.label}</p>
             </div>
           ))}

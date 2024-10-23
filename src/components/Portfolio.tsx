@@ -12,7 +12,7 @@ import proj5 from "../assets/kinggym.jpg"
 const projects = [
   {
     title: "Apotek Online - Aline Admin",
-    desc: "When I was in the 10th grade, when I was given a final project for my project for the DPK-A subject, I made anOnline Pharmacy website called Aline which is specifically for the “Admin” section and this website I created using Next js and NeonDB as the database database",
+    desc: "When I was in the 10th grade, I was given a final project for my project for the DPK-A subject, I made anOnline Pharmacy website called Aline which is specifically for the “Admin” section and this website I created using Next js and NeonDB as the database database",
     devstack: "Next Js, NeonDB, Clerk, Cloudinary, Tailwind-css",
     link: "https://aline-admin.vercel.app/",
     git: "#",
