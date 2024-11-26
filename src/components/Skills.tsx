@@ -2,16 +2,15 @@
 
 import React from "react";
 import { FaHtml5, FaReact, FaJsSquare, FaPython } from "react-icons/fa";
-import { SiCsharp, SiFlutter, SiLaravel, SiNextdotjs } from "react-icons/si";
+import { SiCsharp, SiLaravel, SiNextdotjs } from "react-icons/si";
 
 const skillIcons = [
   { icon: <FaHtml5 size={140} />, label: "HTML", color: "#E34F26" },
-  { icon: <SiCsharp size={140} />, label: "C#", color: "#178600" },
+  { icon: <SiCsharp size={140} />, label: "C#", color: "#823085" },
   { icon: <FaReact size={110} />, label: "React", color: "#61DAFB" },
   { icon: <FaJsSquare size={140} />, label: "JavaScript", color: "#F7DF1E" },
   { icon: <SiLaravel size={140} />, label: "Laravel", color: "#FF2D20" },
   { icon: <SiNextdotjs size={140} />, label: "NextJs", color: "#000000" },
-  { icon: <SiFlutter size={110} />, label: "Flutter", color: "#02569B" },
   { icon: <FaPython size={140} />, label: "Python", color: "#3776AB" },
 ];
 

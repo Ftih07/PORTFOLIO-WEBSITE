@@ -7,6 +7,10 @@ import proj2 from "../assets/aline-store.jpg"
 import proj3 from "../assets/antonov-company.jpg"
 import proj4 from "../assets/b11ngym.jpg"
 import proj5 from "../assets/kinggym.jpg"
+import proj6 from "../assets/zestify.jpg"
+import proj7 from "../assets/naltlan-dealer.jpg"
+import proj8 from "../assets/antonov.jpg"
+
 
 
 const projects = [
@@ -44,11 +48,35 @@ const projects = [
   },
   {
     title: "K1NG GYM Purwokerto",
-    desc: "This website is still unfinished or not 100% finished and I made a website for my parents' promotional needs.",
+    desc: "This website is still unfinished or not 100% finished and I made a website for my parent's promotional needs.",
     devstack: "Next Js, React, Tailwind-css",
     link: "https://k1-ng-gym-website.vercel.app/",
     git: "#",
     src: proj5,
+  },
+  {
+    title: "Zestify",
+    desc: "Zestify UI/UX Design was created for the UI/UX Fast 2024 competition held this November, showcasing innovative and user-focused design solutions tailored to modern digital experiences.",
+    devstack: "Figma",
+    link: "https://www.figma.com/design/M9zLQN9iOlE6OEJgAxL7gM/Zestify?node-id=0-1&node-type=canvas&t=E9KuzdJhaa6OUIfI-0",
+    git: "#",
+    src: proj6,
+  },
+  {
+    title: "Naltlan Dealer",
+    desc: "The Naltlan Dealer UI/UX design was a project I created as part of my class promotion assignment during my 10th grade. It highlights my early exploration of user-focused design principles and creativity in developing functional and visually appealing interfaces.",
+    devstack: "Figma",
+    link: "https://www.figma.com/design/1vQMXWlVLuBPaAjeXVNV5e/DPK-B?node-id=0-1&t=DDB4Qdk6cb4CGUNh-1",
+    git: "#",
+    src: proj7,
+  },
+  {
+    title: "Antonov Company - UI/UX",
+    desc: "The Antonov Company UI/UX design was a project I developed as part of my mid-semester 1 assignment during 10th grade. This work reflects my foundational skills in creating user-centered and aesthetically pleasing designs early in my learning journey.",
+    devstack: "Figma",
+    link: "https://www.figma.com/design/SR6xh7FmZseVne42hCB3Tz/Figma---Antonov-Company---DPK-D?node-id=0-1&t=DBzceHXpyF9jB7yS-1",
+    git: "#",
+    src: proj8,
   },
 ];
 const Portfolio = () => {
