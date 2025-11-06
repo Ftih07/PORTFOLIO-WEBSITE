@@ -109,7 +109,7 @@ const projects = [
     title: "Sejarah Inovatif",
     desc: "Sejarah Inovatif is an educational web project developed as a final assignment for my 11th-grade history class. The website presents Indonesian historical content through an interactive and modern design built using pure HTML, CSS, and JavaScript.",
     devstack: "HTML, CSS, JS",
-    link: "#",
+    link: "https://pas-sejarah.vercel.app/",
     git: "#",
     src: proj12,
   },
