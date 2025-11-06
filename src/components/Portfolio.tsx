@@ -2,16 +2,19 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-import proj1 from "../assets/aline-admin.jpg"
-import proj2 from "../assets/aline-store.jpg"
-import proj3 from "../assets/antonov-company.jpg"
-import proj4 from "../assets/b11ngym.jpg"
-import proj5 from "../assets/kinggym.jpg"
-import proj6 from "../assets/zestify.jpg"
-import proj7 from "../assets/naltlan-dealer.jpg"
-import proj8 from "../assets/antonov.jpg"
-
-
+import proj1 from "../assets/aline-admin.jpg";
+import proj2 from "../assets/aline-store.jpg";
+import proj3 from "../assets/antonov-company.jpg";
+import proj4 from "../assets/b11ngym.jpg";
+import proj5 from "../assets/kinggym.jpg";
+import proj6 from "../assets/zestify.jpg";
+import proj7 from "../assets/naltlan-dealer.jpg";
+import proj8 from "../assets/antonov.jpg";
+import proj9 from "../assets/tasteofindonesia.png";
+import proj10 from "../assets/prosperity-expo.png";
+import proj11 from "../assets/satrianet.png";
+import proj12 from "../assets/sejarah-inovatif.png";
+import proj13 from "../assets/tes-karbit.png";
 
 const projects = [
   {
@@ -78,6 +81,46 @@ const projects = [
     git: "#",
     src: proj8,
   },
+  {
+    title: "Taste of Indonesia - AU",
+    desc: "Taste of Indonesia is a web platform built for promoting Indonesian restaurants and culinary culture across Australia. Developed during my internship at the Indonesian Trade Attaché (Atdag) in Canberra, this project integrates advanced features such as business registration, menu management, online ordering, and Google Maps API for restaurant location tracking.",
+    devstack: "Laravel, Filament, Stripe, Google API",
+    link: "https://tasteofindonesia.com.au/",
+    git: "#",
+    src: proj9,
+  },
+  {
+    title: "Prosperity Expo",
+    desc: "Prosperity Expo is an event-based website created during my internship at Atdag Canberra to showcase and manage participants of the Prosperity Expo exhibition. The platform was designed for scalability and easy content management using Laravel, providing a professional online presence for the event.",
+    devstack: "Laravel",
+    link: "https://prosperity-expo.com/",
+    git: "#",
+    src: proj10,
+  },
+  {
+    title: "Satria Net",
+    desc: "Satria Net is a freelance full-stack web development service website I built independently. It serves as a business platform for clients to discover digital solutions, showcasing my capability in developing end-to-end Laravel-based systems for real-world use.",
+    devstack: "Laravel",
+    link: "https://satrianet.co.id/",
+    git: "#",
+    src: proj11,
+  },
+  {
+    title: "Sejarah Inovatif",
+    desc: "Sejarah Inovatif is an educational web project developed as a final assignment for my 11th-grade history class. The website presents Indonesian historical content through an interactive and modern design built using pure HTML, CSS, and JavaScript.",
+    devstack: "HTML, CSS, JS",
+    link: "#",
+    git: "#",
+    src: proj12,
+  },
+  {
+    title: "Tes Karbit",
+    desc: "Tes Karbit is a fun experimental project built while learning Next.js. It explores modern front-end development practices and serves as a personal sandbox for testing ideas and improving my understanding of the Next.js ecosystem.",
+    devstack: "Next.js",
+    link: "https://karbit-checker.vercel.app/",
+    git: "#",
+    src: proj13,
+  },
 ];
 const Portfolio = () => {
   return (
@@ -110,7 +153,9 @@ const Portfolio = () => {
                 {project.devstack}
               </p>
               <div className="w-64 h-[1px] bg-gray-400 my-4"></div>
-              <a href={project.link} target="_blank" rel="noopener noreferrer">Link to Website</a>
+              <a href={project.link} target="_blank" rel="noopener noreferrer">
+                Link to Website
+              </a>
             </div>
 
             <div className="flex justify-center items-center">
