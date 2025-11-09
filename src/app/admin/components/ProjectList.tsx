@@ -2,7 +2,18 @@
 import { useState } from "react";
 import Image from "next/image";
 import { supabase } from "../../../../lib/supabaseClient";
-import { Eye, Trash2 } from "lucide-react";
+import {
+  Eye,
+  Trash2,
+  Edit3,
+  ExternalLink,
+  Github,
+  X,
+  Upload,
+  Image as ImageIcon,
+  Calendar,
+  Code2,
+} from "lucide-react";
 
 interface Project {
   id: number;
@@ -96,248 +107,469 @@ export default function ProjectList({ projects, onDelete }: ProjectListProps) {
 
     return (
       <div
-        className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-[fadeIn_0.2s_ease-out]"
         onClick={() => {
           setSelectedProject(null);
           setIsEditing(false);
+          setFile(null);
+          setPreview("");
         }}
       >
         <div
-          className="bg-gray-800 rounded-lg p-6 max-w-lg w-full relative overflow-y-auto max-h-[90vh]"
+          className="bg-gray-800/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl max-w-2xl w-full relative overflow-hidden animate-[scaleIn_0.3s_ease-out]"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            onClick={() => {
-              setSelectedProject(null);
-              setIsEditing(false);
-            }}
-            className="absolute top-3 right-3 text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
+          {/* Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 relative">
+            <button
+              onClick={() => {
+                setSelectedProject(null);
+                setIsEditing(false);
+                setFile(null);
+                setPreview("");
+              }}
+              className="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 backdrop-blur-lg rounded-lg flex items-center justify-center text-white transition-all"
+            >
+              <X size={20} />
+            </button>
 
-          {!isEditing ? (
-            <>
-              <h2 className="text-2xl font-bold mb-3">{p.title}</h2>
-              <p className="text-gray-400 mb-2">{p.devstack}</p>
-
-              {p.image_url ? (
-                <Image
-                  src={p.image_url}
-                  alt={p.title}
-                  width={500}
-                  height={300}
-                  className="rounded mb-3 object-cover"
-                />
-              ) : (
-                <div className="w-full h-[200px] bg-gray-700 rounded mb-3 flex items-center justify-center text-gray-400">
-                  No Image
-                </div>
-              )}
-
-              <p className="text-gray-300 mb-3">{p.description}</p>
-
-              <div className="space-x-2 mb-4">
-                {p.link && (
-                  <a
-                    href={p.link}
-                    target="_blank"
-                    className="text-orange-400 hover:underline"
-                  >
-                    🔗 Live
-                  </a>
-                )}
-                {p.git && (
-                  <a
-                    href={p.git}
-                    target="_blank"
-                    className="text-orange-400 hover:underline"
-                  >
-                    🧠 GitHub
-                  </a>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-white/10 backdrop-blur-lg rounded-xl flex items-center justify-center">
+                {isEditing ? (
+                  <Edit3 className="text-white" size={24} />
+                ) : (
+                  <Eye className="text-white" size={24} />
                 )}
               </div>
-
-              <div className="flex justify-end">
-                <button
-                  onClick={() => {
-                    setEditData(p);
-                    setPreview(p.image_url || "");
-                    setIsEditing(true);
-                  }}
-                  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-                >
-                  Edit
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 className="text-xl font-bold mb-4">Edit Project</h2>
-
-              <div className="flex flex-col gap-2">
-                <input
-                  className="p-2 bg-gray-700 rounded"
-                  value={editData?.title ?? ""}
-                  onChange={(e) =>
-                    setEditData((prev) => ({ ...prev!, title: e.target.value }))
-                  }
-                  placeholder="Title"
-                />
-                <textarea
-                  className="p-2 bg-gray-700 rounded"
-                  value={editData?.description ?? ""}
-                  onChange={(e) =>
-                    setEditData((prev) => ({
-                      ...prev!,
-                      description: e.target.value,
-                    }))
-                  }
-                  placeholder="Description"
-                />
-                <input
-                  className="p-2 bg-gray-700 rounded"
-                  value={editData?.devstack ?? ""}
-                  onChange={(e) =>
-                    setEditData((prev) => ({
-                      ...prev!,
-                      devstack: e.target.value,
-                    }))
-                  }
-                  placeholder="Tech Stack"
-                />
-                <input
-                  className="p-2 bg-gray-700 rounded"
-                  value={editData?.link ?? ""}
-                  onChange={(e) =>
-                    setEditData((prev) => ({ ...prev!, link: e.target.value }))
-                  }
-                  placeholder="Live Link"
-                />
-                <input
-                  className="p-2 bg-gray-700 rounded"
-                  value={editData?.git ?? ""}
-                  onChange={(e) =>
-                    setEditData((prev) => ({ ...prev!, git: e.target.value }))
-                  }
-                  placeholder="GitHub Link"
-                />
-              </div>
-
-              {/* Upload & Preview */}
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragging(true);
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  const uploadedFile = e.dataTransfer.files?.[0];
-                  if (uploadedFile) {
-                    setFile(uploadedFile);
-                    setPreview(URL.createObjectURL(uploadedFile));
-                  }
-                }}
-                className={`border-2 border-dashed rounded p-6 text-center mt-4 transition ${
-                  isDragging
-                    ? "border-orange-400 bg-orange-400/10"
-                    : "border-gray-600"
-                }`}
-              >
-                <p className="text-gray-400 mb-2">
-                  {file
-                    ? `📁 ${file.name}`
-                    : "Drag & drop image here, or click to select"}
+              <div>
+                <h2 className="text-2xl font-bold text-white">
+                  {isEditing ? "Edit Project" : p.title}
+                </h2>
+                <p className="text-purple-100 text-sm">
+                  {isEditing ? "Update project information" : p.devstack}
                 </p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="file-upload"
-                  onChange={(e) => {
-                    const uploadedFile = e.target.files?.[0];
-                    if (uploadedFile) {
-                      setFile(uploadedFile);
-                      setPreview(URL.createObjectURL(uploadedFile));
-                    }
-                  }}
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer text-orange-400 hover:underline"
-                >
-                  Browse Files
-                </label>
               </div>
+            </div>
+          </div>
 
-              {preview && (
-                <div className="mt-4 flex justify-center">
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    width={400}
-                    height={250}
-                    className="rounded border border-gray-600 object-cover"
+          {/* Content */}
+          <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+            {!isEditing ? (
+              <div className="space-y-6">
+                {/* Project Image */}
+                {p.image_url ? (
+                  <div className="relative rounded-xl overflow-hidden border border-gray-700/50 shadow-lg">
+                    <Image
+                      src={p.image_url}
+                      alt={p.title}
+                      width={800}
+                      height={450}
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-64 bg-gray-700/50 rounded-xl flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-600">
+                    <ImageIcon size={48} className="mb-2 opacity-50" />
+                    <p className="text-sm">No Image Available</p>
+                  </div>
+                )}
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                    <Code2 size={16} />
+                    Description
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed">
+                    {p.description}
+                  </p>
+                </div>
+
+                {/* Tech Stack */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                    <Code2 size={16} />
+                    Tech Stack
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {p.devstack.split(",").map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-lg text-sm font-medium border border-purple-500/20"
+                      >
+                        {tech.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Links */}
+                <div className="flex flex-wrap gap-3">
+                  {p.link && (
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg font-medium transition-all border border-blue-500/20"
+                    >
+                      <ExternalLink size={16} />
+                      Live Demo
+                    </a>
+                  )}
+                  {p.git && (
+                    <a
+                      href={p.git}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700 text-gray-300 rounded-lg font-medium transition-all border border-gray-600"
+                    >
+                      <Github size={16} />
+                      GitHub
+                    </a>
+                  )}
+                </div>
+
+                {/* Created Date */}
+                <div className="pt-4 border-t border-gray-700/50">
+                  <p className="text-xs text-gray-500 flex items-center gap-2">
+                    <Calendar size={14} />
+                    Created: {new Date(p.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+
+                {/* Action Button */}
+                <div className="flex justify-end pt-4">
+                  <button
+                    onClick={() => {
+                      setEditData(p);
+                      setPreview(p.image_url || "");
+                      setIsEditing(true);
+                    }}
+                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                  >
+                    <Edit3 size={18} />
+                    Edit Project
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Form Fields */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-400">
+                    Project Title
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    value={editData?.title ?? ""}
+                    onChange={(e) =>
+                      setEditData((prev) => ({
+                        ...prev!,
+                        title: e.target.value,
+                      }))
+                    }
+                    placeholder="Enter project title"
                   />
                 </div>
-              )}
 
-              <div className="flex justify-end gap-2 mt-6">
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={saveEdit}
-                  disabled={loading}
-                  className="px-4 py-2 rounded bg-green-600 hover:bg-green-700"
-                >
-                  {loading ? "Saving..." : "Save"}
-                </button>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-400">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all min-h-[120px] resize-none"
+                    value={editData?.description ?? ""}
+                    onChange={(e) =>
+                      setEditData((prev) => ({
+                        ...prev!,
+                        description: e.target.value,
+                      }))
+                    }
+                    placeholder="Describe your project"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-400">
+                    Tech Stack
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    value={editData?.devstack ?? ""}
+                    onChange={(e) =>
+                      setEditData((prev) => ({
+                        ...prev!,
+                        devstack: e.target.value,
+                      }))
+                    }
+                    placeholder="React, Next.js, Tailwind (comma separated)"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400">
+                      Live Demo URL
+                    </label>
+                    <input
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      value={editData?.link ?? ""}
+                      onChange={(e) =>
+                        setEditData((prev) => ({
+                          ...prev!,
+                          link: e.target.value,
+                        }))
+                      }
+                      placeholder="https://example.com"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400">
+                      GitHub URL
+                    </label>
+                    <input
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      value={editData?.git ?? ""}
+                      onChange={(e) =>
+                        setEditData((prev) => ({
+                          ...prev!,
+                          git: e.target.value,
+                        }))
+                      }
+                      placeholder="https://github.com/user/repo"
+                    />
+                  </div>
+                </div>
+
+                {/* Image Upload */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-400">
+                    Project Image
+                  </label>
+                  <div
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDragging(true);
+                    }}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDragging(false);
+                      const uploadedFile = e.dataTransfer.files?.[0];
+                      if (uploadedFile) {
+                        setFile(uploadedFile);
+                        setPreview(URL.createObjectURL(uploadedFile));
+                      }
+                    }}
+                    className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+                      isDragging
+                        ? "border-purple-400 bg-purple-400/10"
+                        : "border-gray-600 hover:border-gray-500"
+                    }`}
+                  >
+                    <Upload
+                      className={`mx-auto mb-4 ${
+                        isDragging ? "text-purple-400" : "text-gray-400"
+                      }`}
+                      size={48}
+                    />
+                    <p className="text-gray-400 mb-2">
+                      {file ? (
+                        <span className="text-purple-400 font-medium">
+                          📁 {file.name}
+                        </span>
+                      ) : (
+                        "Drag & drop image here, or click to browse"
+                      )}
+                    </p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="file-upload-edit"
+                      onChange={(e) => {
+                        const uploadedFile = e.target.files?.[0];
+                        if (uploadedFile) {
+                          setFile(uploadedFile);
+                          setPreview(URL.createObjectURL(uploadedFile));
+                        }
+                      }}
+                    />
+                    <label
+                      htmlFor="file-upload-edit"
+                      className="inline-block cursor-pointer px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all font-medium"
+                    >
+                      Browse Files
+                    </label>
+                  </div>
+
+                  {/* Image Preview */}
+                  {preview && (
+                    <div className="mt-4 relative rounded-xl overflow-hidden border border-gray-700/50">
+                      <Image
+                        src={preview}
+                        alt="Preview"
+                        width={800}
+                        height={450}
+                        className="w-full h-auto object-cover"
+                      />
+                      <div className="absolute top-2 right-2">
+                        <button
+                          onClick={() => {
+                            setFile(null);
+                            setPreview(editData?.image_url || "");
+                          }}
+                          className="w-8 h-8 bg-red-500/80 hover:bg-red-500 backdrop-blur-lg rounded-lg flex items-center justify-center text-white transition-all"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setFile(null);
+                      setPreview("");
+                    }}
+                    className="flex-1 px-4 py-3 rounded-xl bg-gray-700/50 hover:bg-gray-700 text-gray-300 font-semibold transition-all border border-gray-600"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={saveEdit}
+                    disabled={loading}
+                    className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Changes"
+                    )}
+                  </button>
+                </div>
               </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );
   };
 
   if (projects.length === 0)
-    return <p className="text-gray-400 text-center">No projects found.</p>;
+    return (
+      <div className="text-center py-16">
+        <div className="w-20 h-20 bg-gray-700/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <ImageIcon className="text-gray-500" size={40} />
+        </div>
+        <p className="text-gray-400 text-lg font-medium mb-2">
+          No projects found
+        </p>
+        <p className="text-gray-500 text-sm">
+          Start by adding your first project
+        </p>
+      </div>
+    );
 
   return (
-    <div className="space-y-4">
-      {projects.map((proj) => (
-        <div
-          key={proj.id}
-          className="bg-gray-800 p-4 rounded-lg flex justify-between items-center hover:bg-gray-700 transition"
-        >
-          <div className="flex-1 cursor-pointer">
-            <h3 className="text-lg font-semibold">{proj.title}</h3>
-            <p className="text-sm text-gray-400">{proj.devstack}</p>
+    <>
+      <div className="space-y-4">
+        {projects.map((proj) => (
+          <div
+            key={proj.id}
+            className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 p-5 rounded-xl hover:border-purple-500/30 transition-all duration-300 group"
+          >
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              {/* Project Info */}
+              <div className="flex-1 space-y-2">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <Code2 className="text-white" size={20} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-400 transition-colors">
+                      {proj.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-2">
+                      {proj.devstack}
+                    </p>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Calendar size={12} />
+                      {new Date(proj.created_at).toLocaleDateString()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setSelectedProject(proj)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg font-medium transition-all border border-blue-500/20 hover:border-blue-500/40"
+                >
+                  <Eye size={16} />
+                  <span className="hidden sm:inline">View</span>
+                </button>
+                <button
+                  onClick={() => deleteProject(proj.id)}
+                  className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg font-medium transition-all border border-red-500/20 hover:border-red-500/40"
+                >
+                  <Trash2 size={16} />
+                  <span className="hidden sm:inline">Delete</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setSelectedProject(proj)}
-              className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm flex items-center gap-1"
-            >
-              <Eye className="w-4 h-4" /> View
-            </button>
-            <button
-              onClick={() => deleteProject(proj.id)}
-              className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm flex items-center gap-1"
-            >
-              <Trash2 className="w-4 h-4" /> Delete
-            </button>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {renderModal()}
-    </div>
+
+      {/* Custom Scrollbar Styles */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(55, 65, 81, 0.3);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(139, 92, 246, 0.5);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(139, 92, 246, 0.7);
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
+    </>
   );
 }
