@@ -1,173 +1,209 @@
 "use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "../../lib/supabaseClient";
+import { ZoomIn, X } from "lucide-react";
 
-import proj1 from "../assets/aline-admin.jpg";
-import proj2 from "../assets/aline-store.jpg";
-import proj3 from "../assets/antonov-company.jpg";
-import proj4 from "../assets/b11ngym.jpg";
-import proj5 from "../assets/kinggym.jpg";
-import proj6 from "../assets/zestify.jpg";
-import proj7 from "../assets/naltlan-dealer.jpg";
-import proj8 from "../assets/antonov.jpg";
-import proj9 from "../assets/tasteofindonesia.png";
-import proj10 from "../assets/prosperity-expo.png";
-import proj11 from "../assets/satrianet.png";
-import proj12 from "../assets/sejarah-inovatif.png";
-import proj13 from "../assets/tes-karbit.png";
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  devstack: string;
+  link: string;
+  image_url: string;
+}
 
-const projects = [
-  {
-    title: "Apotek Online - Aline Admin",
-    desc: "When I was in the 10th grade, I was given a final project for my project for the DPK-A subject, I made anOnline Pharmacy website called Aline which is specifically for the “Admin” section and this website I created using Next js and NeonDB as the database database",
-    devstack: "Next Js, NeonDB, Clerk, Cloudinary, Tailwind-css",
-    link: "https://aline-admin.vercel.app/",
-    git: "#",
-    src: proj1,
-  },
-  {
-    title: "Apotek Online - Aline Store",
-    desc: "Still the same as the previous project only it's just that this website is specifically for the “Store” section or for the section seen by buyers and This website is interconnected between Admin and Store",
-    devstack: "Next Js, React, Stripe, Tailwind-css",
-    link: "https://aline-store-seven.vercel.app/",
-    git: "#",
-    src: proj2,
-  },
-  {
-    title: "Antonov Company",
-    desc: "For the website that I just finished working on there is a Company Profile website called Antonov Company. I made this website for Midterm Assessment of MK3A subject. This website still uses simple/basic HTML, CSS, and JavaScript which is simple / basic",
-    devstack: "HTML, CSS, JavaScript",
-    link: "https://mk-3-a-antonov-company.vercel.app/",
-    git: "#",
-    src: proj3,
-  },
-  {
-    title: "B11N GYM Purwokerto",
-    desc: "For this website is still unfinished or still not 100% finished and I made this website using Next js. I made this website for promotional needs, selling members of my parents' gym gym members, and also at the same time to work on PKK-A and PKK-B portfolio assignments",
-    devstack: "Next Js, React, Tailwind-css",
-    link: "https://b11-n-gym-website.vercel.app/",
-    git: "#",
-    src: proj4,
-  },
-  {
-    title: "K1NG GYM Purwokerto",
-    desc: "This website is still unfinished or not 100% finished and I made a website for my parent's promotional needs.",
-    devstack: "Next Js, React, Tailwind-css",
-    link: "https://k1-ng-gym-website.vercel.app/",
-    git: "#",
-    src: proj5,
-  },
-  {
-    title: "Zestify",
-    desc: "Zestify UI/UX Design was created for the UI/UX Fast 2024 competition held this November, showcasing innovative and user-focused design solutions tailored to modern digital experiences.",
-    devstack: "Figma",
-    link: "https://www.figma.com/design/M9zLQN9iOlE6OEJgAxL7gM/Zestify?node-id=0-1&node-type=canvas&t=E9KuzdJhaa6OUIfI-0",
-    git: "#",
-    src: proj6,
-  },
-  {
-    title: "Naltlan Dealer",
-    desc: "The Naltlan Dealer UI/UX design was a project I created as part of my class promotion assignment during my 10th grade. It highlights my early exploration of user-focused design principles and creativity in developing functional and visually appealing interfaces.",
-    devstack: "Figma",
-    link: "https://www.figma.com/design/1vQMXWlVLuBPaAjeXVNV5e/DPK-B?node-id=0-1&t=DDB4Qdk6cb4CGUNh-1",
-    git: "#",
-    src: proj7,
-  },
-  {
-    title: "Antonov Company - UI/UX",
-    desc: "The Antonov Company UI/UX design was a project I developed as part of my mid-semester 1 assignment during 10th grade. This work reflects my foundational skills in creating user-centered and aesthetically pleasing designs early in my learning journey.",
-    devstack: "Figma",
-    link: "https://www.figma.com/design/SR6xh7FmZseVne42hCB3Tz/Figma---Antonov-Company---DPK-D?node-id=0-1&t=DBzceHXpyF9jB7yS-1",
-    git: "#",
-    src: proj8,
-  },
-  {
-    title: "Taste of Indonesia - AU",
-    desc: "Taste of Indonesia is a web platform built for promoting Indonesian restaurants and culinary culture across Australia. Developed during my internship at the Indonesian Trade Attaché (Atdag) in Canberra, this project integrates advanced features such as business registration, menu management, online ordering, and Google Maps API for restaurant location tracking.",
-    devstack: "Laravel, Filament, Stripe, Google API",
-    link: "https://tasteofindonesia.com.au/",
-    git: "#",
-    src: proj9,
-  },
-  {
-    title: "Prosperity Expo",
-    desc: "Prosperity Expo is an event-based website created during my internship at Atdag Canberra to showcase and manage participants of the Prosperity Expo exhibition. The platform was designed for scalability and easy content management using Laravel, providing a professional online presence for the event.",
-    devstack: "Laravel",
-    link: "https://prosperity-expo.com/",
-    git: "#",
-    src: proj10,
-  },
-  {
-    title: "Satria Net",
-    desc: "Satria Net is a freelance full-stack web development service website I built independently. It serves as a business platform for clients to discover digital solutions, showcasing my capability in developing end-to-end Laravel-based systems for real-world use.",
-    devstack: "Laravel",
-    link: "https://satrianet.co.id/",
-    git: "#",
-    src: proj11,
-  },
-  {
-    title: "Sejarah Inovatif",
-    desc: "Sejarah Inovatif is an educational web project developed as a final assignment for my 11th-grade history class. The website presents Indonesian historical content through an interactive and modern design built using pure HTML, CSS, and JavaScript.",
-    devstack: "HTML, CSS, JS",
-    link: "https://pas-sejarah.vercel.app/",
-    git: "#",
-    src: proj12,
-  },
-  {
-    title: "Tes Karbit",
-    desc: "Tes Karbit is a fun experimental project built while learning Next.js. It explores modern front-end development practices and serves as a personal sandbox for testing ideas and improving my understanding of the Next.js ecosystem.",
-    devstack: "Next.js",
-    link: "https://karbit-checker.vercel.app/",
-    git: "#",
-    src: proj13,
-  },
-];
+const ITEMS_PER_PAGE = 5;
+
 const Portfolio = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("id", { ascending: true });
+      if (!error && data) setProjects(data);
+    };
+    fetchProjects();
+  }, []);
+
+  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentProjects = projects.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
   return (
     <div
       className="text-white bg-gradient-to-b from-black to-[#381a5f] py-18 mt-52"
       id="portfolio"
     >
+      {/* Title Section */}
       <h1 className="text-white text-6xl max-w-[320px] mx-auto font-semibold my-12">
         Project <span className="text-orange-400">Highlights</span>
       </h1>
-      <div className="px-6 md:px-0 max-w-[1000px] mx-auto mt-40 space-y-24">
-        {projects.map((project, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 75 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className={`mt-12 flex flex-col ${
-              index % 2 === 1 ? "md:flex-row-reverse gap-12" : "md:flex-row"
+
+      {/* Project List */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage} // ini penting biar ada animasi transisi antar halaman
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          transition={{ duration: 0.5 }}
+          className="px-6 md:px-0 max-w-[1000px] mx-auto mt-40 space-y-24"
+        >
+          {currentProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 75 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className={`mt-12 flex flex-col ${
+                index % 2 === 1 ? "md:flex-row-reverse gap-12" : "md:flex-row"
+              }`}
+            >
+              {/* Left (text) */}
+              <div className="space-y-2 max-w-[550px]">
+                <h2 className="text-7xl my-4 text-white/70">
+                  {`0${startIndex + index + 1}`}
+                </h2>
+                <p className="text-4xl">{project.title}</p>
+                <p className="text-lg text-white/70 break-words p-4">
+                  {project.description}
+                </p>
+                <p className="text-xl text-orange-400 font-semibold">
+                  {project.devstack}
+                </p>
+                <div className="w-64 h-[1px] bg-gray-400 my-4"></div>
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  Link to Website
+                </a>
+              </div>
+
+              {/* Image Section */}
+              <div
+                className="relative group flex justify-center items-center cursor-pointer"
+                onClick={() => setSelectedImage(project.image_url)}
+              >
+                <Image
+                  src={project.image_url}
+                  alt={project.title}
+                  width={500}
+                  height={350}
+                  className="h-[350px] w-[500px] object-cover border rounded border-gray-700 transition-transform duration-300 group-hover:scale-105"
+                />
+                {/* Overlay + Icon */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex justify-center items-center">
+                  <ZoomIn className="w-12 h-12 text-white" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-16">
+          <button
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-lg border border-gray-600 transition ${
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-orange-500 hover:text-black"
             }`}
           >
-            <div className="space-y-2 max-w-[550px]">
-              <h2 className="text-7xl my-4 text-white/70">{`0${index + 1}`}</h2>
-              <p className="text-4xl">{project.title}</p>
-              <p className="text-lg text-white/70 break-words p-4">
-                {project.desc}
-              </p>
-              <p className="text-xl text-orange-400 font-semibold">
-                {project.devstack}
-              </p>
-              <div className="w-64 h-[1px] bg-gray-400 my-4"></div>
-              <a href={project.link} target="_blank" rel="noopener noreferrer">
-                Link to Website
-              </a>
-            </div>
+            Prev
+          </button>
 
-            <div className="flex justify-center items-center">
+          {/* Number Indicators */}
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`w-8 h-8 rounded-full flex justify-center items-center border ${
+                  currentPage === i + 1
+                    ? "bg-orange-500 border-orange-500 text-black font-semibold"
+                    : "border-gray-500 text-gray-300 hover:border-orange-400 hover:text-orange-400"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded-lg border border-gray-600 transition ${
+              currentPage === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-orange-500 hover:text-black"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Modal Image */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.div
+              className="relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-2 right-2 bg-black/60 rounded-full p-2 hover:bg-black transition"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
               <Image
-                src={project.src}
-                alt={project.title}
-                className="h-[350px] w-[500px] object-cover border rounded border-gray-700"
+                src={selectedImage}
+                alt="Project Preview"
+                width={900}
+                height={600}
+                className="max-h-[90vh] w-auto object-contain rounded-lg"
               />
-            </div>
+            </motion.div>
           </motion.div>
-        ))}
-      </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
