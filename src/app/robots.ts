@@ -2,11 +2,13 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://yvezh.my.id";
+
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://yvezh.my.id//sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
