@@ -56,8 +56,22 @@ const Hero = () => {
         <Image
           src={profilepic}
           alt="profile picture"
-          className="h-auto w-80 mx-auto"
+          className="h-auto w-72 mx-auto m-10"
         />
+
+        <div className="flex flex-col items-center mt-0 space-y-4">
+          {/* Tombol View CV */}
+          <motion.a
+            href="/Naufal-Fathi-CV.pdf"
+            target="_blank"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-orange-500 to-orange-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+          >
+            👀 View My CV
+          </motion.a>
+        </div>
+
       </div>
     </div>
   );

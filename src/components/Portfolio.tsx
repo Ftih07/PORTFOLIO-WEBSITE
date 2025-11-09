@@ -21,6 +21,9 @@ const Portfolio = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const formatNumber = (num: number): string =>
+    num < 10 ? `0${num}` : `${num}`;
+  
   useEffect(() => {
     const fetchProjects = async () => {
       const { data, error } = await supabase
@@ -81,7 +84,7 @@ const Portfolio = () => {
               {/* Left (text) */}
               <div className="space-y-2 max-w-[550px]">
                 <h2 className="text-7xl my-4 text-white/70">
-                  {`0${startIndex + index + 1}`}
+                  {formatNumber(startIndex + index + 1)}
                 </h2>
                 <p className="text-4xl">{project.title}</p>
                 <p className="text-lg text-white/70 break-words p-4">
