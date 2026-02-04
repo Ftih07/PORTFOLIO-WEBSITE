@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "../../lib/supabaseClient";
-import { ZoomIn, X } from "lucide-react";
+// 1. Tambahkan import icon Github & Link
+import { ZoomIn, X, Github, Link as LinkIcon } from "lucide-react";
 
 interface Project {
   id: number;
   title: string;
   description: string;
   devstack: string;
-  link: string;
+  link: string | null; // Update tipe data agar boleh null
+  git: string | null; // 2. Tambahkan properti git
   image_url: string;
 }
 
@@ -23,7 +25,7 @@ const Portfolio = () => {
 
   const formatNumber = (num: number): string =>
     num < 10 ? `0${num}` : `${num}`;
-  
+
   useEffect(() => {
     const fetchProjects = async () => {
       const { data, error } = await supabase
@@ -39,7 +41,7 @@ const Portfolio = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentProjects = projects.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
   const handleNext = () => {
@@ -63,7 +65,7 @@ const Portfolio = () => {
       {/* Project List */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentPage} // ini penting biar ada animasi transisi antar halaman
+          key={currentPage}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
@@ -93,15 +95,37 @@ const Portfolio = () => {
                 <p className="text-xl text-orange-400 font-semibold">
                   {project.devstack}
                 </p>
+
                 <div className="w-64 h-[1px] bg-gray-400 my-4"></div>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-400 transition-colors"
-                >
-                  Link to Website
-                </a>
+
+                {/* 3. Logic Tombol Link & Git */}
+                <div className="flex items-center gap-6">
+                  {/* Cek apakah link website ada? */}
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 hover:text-orange-400 transition-colors"
+                    >
+                      <LinkIcon size={20} />
+                      Link to Website
+                    </a>
+                  )}
+
+                  {/* Cek apakah link git ada? */}
+                  {project.git && (
+                    <a
+                      href={project.git}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 hover:text-orange-400 transition-colors"
+                    >
+                      <Github size={20} />
+                      Source Code
+                    </a>
+                  )}
+                </div>
               </div>
 
               {/* Image Section */}

@@ -40,6 +40,20 @@ export default function FloatingButton() {
             >
               💬 Contact
             </motion.a>
+
+            {/* View CV */}
+            <motion.a
+              href="/Naufal-Fathi-CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.8 }}
+              transition={{ duration: 0.25 }}
+              className="bg-orange-500 text-white text-xl font-semibold px-10 py-4 rounded-full shadow-lg hover:shadow-2xl hover:bg-orange-600 transform hover:scale-105 transition-all duration-200"
+            >
+              👀 View job application
+            </motion.a>
           </>
         )}
       </AnimatePresence>
