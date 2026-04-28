@@ -49,8 +49,9 @@ const Hero = () => {
         </motion.div>
 
         <p className="text-center text-xl max-w-[500px] mx-auto mt-8 text-white/80">
-          I am a student of a vocational high school in smk telkom purwokerto
-          and I am a web, mobile, and fullstack developer.
+          A Fullstack Web Developer passionate about building robust web
+          applications, scalable digital systems, and seamless user experiences
+          using modern technologies.
         </p>
 
         <Image
@@ -71,7 +72,6 @@ const Hero = () => {
             👀 View My CV
           </motion.a>
         </div>
-
       </div>
     </div>
   );

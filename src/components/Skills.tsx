@@ -1,18 +1,21 @@
 "use client";
 
 import React from "react";
-import { FaReact, FaJsSquare, FaPython, FaPhp, FaUnity } from "react-icons/fa";
-import { SiCsharp, SiLaravel, SiNextdotjs } from "react-icons/si";
+import { FaReact, FaJsSquare, FaPython, FaPhp } from "react-icons/fa";
+import { SiLaravel, SiMysql, SiNextdotjs, SiVuedotjs } from "react-icons/si";
 
 const skillIcons = [
-  { icon: <FaUnity size={140} />, label: "Unity", color: "#222C37" }, // warna gelap khas Unity
-  { icon: <SiCsharp size={140} />, label: "C#", color: "#68217A" }, // warna ungu khas C#
-  { icon: <FaReact size={110} />, label: "React", color: "#61DAFB" }, // biru muda khas React
-  { icon: <FaJsSquare size={140} />, label: "JavaScript", color: "#F7DF1E" }, // kuning khas JS
-  { icon: <SiLaravel size={140} />, label: "Laravel", color: "#FF2D20" }, // merah khas Laravel
-  { icon: <SiNextdotjs size={140} />, label: "Next.js", color: "#000000" }, // hitam khas Next.js
-  { icon: <FaPython size={140} />, label: "Python", color: "#3776AB" }, // biru khas Python
-  { icon: <FaPhp size={140} />, label: "PHP", color: "#777BB4" }, // ungu khas PHP
+  // --- FRONTEND ---
+  { icon: <FaJsSquare size={140} />, label: "JavaScript", color: "#F7DF1E" }, // kuning JS
+  { icon: <FaReact size={140} />, label: "React", color: "#61DAFB" }, // biru React
+  { icon: <SiNextdotjs size={140} />, label: "Next.js", color: "#000000" }, // hitam Next.js
+  { icon: <SiVuedotjs size={140} />, label: "Vue.js", color: "#4FC08D" }, // hijau Vue
+
+  // --- BACKEND & DATABASE ---
+  { icon: <FaPhp size={140} />, label: "PHP", color: "#777BB4" }, // ungu PHP
+  { icon: <SiLaravel size={140} />, label: "Laravel", color: "#FF2D20" }, // merah Laravel
+  { icon: <FaPython size={140} />, label: "Python", color: "#3776AB" }, // biru Python
+  { icon: <SiMysql size={140} />, label: "MySQL", color: "#4479A1" }, // biru MySQL
 ];
 
 const Skills = () => {
